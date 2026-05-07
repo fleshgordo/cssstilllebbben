@@ -6,6 +6,8 @@ Ziel: die Grenzen von CSS ausloten & Web inspector kennenlernen
 
 Fertig? Screenshot machen und aufs Bild ziehen – die Zeit stoppt.
 
+Advanced challenge (nachdem der Time stoppt ;)): Mache das Grid responsive (wie sieht es auf Mobile aus). Untersuche die Möglichkeiten von Grid-Animationen. Wie viel geht da?
+
 Links:
 
 - Intro Grids: https://tube.switch.ch/videos/1VSVGdWibg
