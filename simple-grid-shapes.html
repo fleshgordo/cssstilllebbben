@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3x3 CSS Shapes Grid</title>
+    <style>
+      :root {
+        --bg1: #f6f8ff;
+        --bg2: #eef4ff;
+        --ink: #1f2d3d;
+        --cell: #ffffff;
+        --line: #d4dfeb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 20% 15%, #ffffff 0 20%, transparent 21%),
+          radial-gradient(circle at 80% 85%, #dce8ff 0 25%, transparent 26%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .stage {
+        width: min(760px, 100%);
+        perspective: 980px;
+        perspective-origin: 50% 18%;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        transform-style: preserve-3d;
+        transform: rotateX(42deg);
+        transform-origin: center top;
+        clip-path: polygon(11% 0, 89% 0, 100% 100%, 0 100%);
+      }
+
+      .cell {
+        background: var(--cell);
+        display: grid;
+        place-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .circle {
+        width: 62%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #e62424;
+        box-shadow:
+          inset -8px -10px 0 rgba(0, 0, 0, 0.08),
+          0 8px 16px rgba(230, 36, 36, 0.25);
+      }
+
+      .pencil {
+        position: relative;
+        width: 68%;
+        height: 18%;
+        transform: rotate(90deg);
+      }
+
+      .pencil::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 8px;
+        background: linear-gradient(
+          to right,
+          #f6b5c5 0 12%,
+          #ef8ba2 12% 16%,
+          #f5d34f 16% 80%,
+          #d6ad1f 80% 82%,
+          #f2e6c8 82% 92%,
+          #3a3128 92% 100%
+        );
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.18);
+      }
+
+      .book {
+        position: relative;
+        width: 54%;
+        aspect-ratio: 0.78 / 1;
+        transform-style: preserve-3d;
+        transform: rotateY(-28deg) rotateX(4deg);
+        transform-origin: center;
+        background: linear-gradient(160deg, #3c86ff, #1b56c8);
+        border-radius: 4px 6px 6px 4px;
+        box-shadow: 0 10px 14px rgba(5, 31, 91, 0.3);
+      }
+
+      .book::after {
+        content: "";
+        position: absolute;
+        top: 6%;
+        right: -8%;
+        width: 12%;
+        height: 88%;
+        border-radius: 1px 3px 3px 1px;
+        background: linear-gradient(to right, #f5f8ff, #dbe5f8);
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.12);
+      }
+
+      .book-cell {
+        perspective: 780px;
+        perspective-origin: 45% 50%;
+      }
+
+      .cup {
+        position: relative;
+        width: 42%;
+        height: 34%;
+        border-radius: 0 0 10px 10px;
+        background: linear-gradient(180deg, #4fcf7a, #2b9b53);
+        box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.08);
+      }
+
+      .cup::before {
+        content: "";
+        position: absolute;
+        top: -8%;
+        left: -6%;
+        width: 112%;
+        height: 12%;
+        border-radius: 999px;
+        background: #76e59b;
+      }
+
+      .cup::after {
+        content: "";
+        position: absolute;
+        top: 22%;
+        right: -24%;
+        width: 26%;
+        height: 42%;
+        border: 4px solid #2b9b53;
+        border-left: 0;
+        border-radius: 0 999px 999px 0;
+      }
+
+      .knife {
+        position: relative;
+        width: 64%;
+        height: 26%;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #f0f3f9, #c2c9d6);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+          0 6px 12px rgba(40, 53, 74, 0.15);
+      }
+
+      .knife::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 8%;
+        width: 14%;
+        height: 14%;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        background: #9da7b9;
+      }
+
+      .knife::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -18%;
+        width: 24%;
+        height: 42%;
+        transform: translateY(-50%);
+        border-radius: 2px;
+        background: linear-gradient(90deg, #d8deea, #f7f9ff);
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
+      }
+
+      .alarm {
+        position: relative;
+        width: 52%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #ffffff,
+          #e2e7f0 68%,
+          #b8c1cf 100%
+        );
+        border: 5px solid #a9b2c1;
+        box-shadow:
+          inset 0 2px 0 rgba(255, 255, 255, 0.85),
+          0 8px 14px rgba(30, 42, 61, 0.16);
+      }
+
+      .alarm::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 5px;
+        height: 24%;
+        background: #7f8998;
+        transform: translate(-50%, -86%);
+        border-radius: 4px;
+        box-shadow: 10px 18px 0 -1px #7f8998;
+      }
+
+      .alarm::after {
+        content: "";
+        position: absolute;
+        top: -16%;
+        left: 50%;
+        width: 66%;
+        height: 22%;
+        transform: translateX(-50%);
+        background:
+          radial-gradient(circle at 20% 55%, #cdd4e0 0 24%, transparent 26%),
+          radial-gradient(circle at 80% 55%, #cdd4e0 0 24%, transparent 26%);
+      }
+
+      @media (max-width: 640px) {
+        .grid {
+          gap: 10px;
+        }
+
+        .cell {
+          border-radius: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage" aria-label="3 by 3 CSS grid with shapes in first row">
+      <section class="grid">
+        <div class="cell">
+          <div class="circle" aria-label="red circle"></div>
+        </div>
+        <div class="cell">
+          <div class="pencil" aria-label="yellow pencil"></div>
+        </div>
+        <div class="cell book-cell">
+          <div class="book" aria-label="blue book in perspective"></div>
+        </div>
+        <div class="cell">
+          <div class="cup" aria-label="minimalist green cup"></div>
+        </div>
+        <div class="cell">
+          <div class="knife" aria-label="silver Swiss knife"></div>
+        </div>
+        <div class="cell">
+          <div class="alarm" aria-label="silver alarm watch"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

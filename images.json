@@ -1,0 +1,18 @@
+{
+  "easy": [
+    { "file": "easy_1.jpg" },
+    { "file": "easy_2.jpg" },
+    { "file": "easy_3.jpg" },
+    { "file": "easy_4.jpg" },
+    { "file": "easy_5.jpg" },
+    { "file": "easy_6.jpg" }
+  ],
+  "advanced": [
+    { "file": "adv_1.jpg" },
+    { "file": "adv_2.jpg" },
+    { "file": "adv_3.jpg" },
+    { "file": "adv_4.jpg" },
+    { "file": "adv_5.jpg" },
+    { "file": "adv_6.jpg" }
+  ]
+}

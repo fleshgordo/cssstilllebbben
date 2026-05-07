@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CSSSTILLEBEN</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <h1 id="title">
+            <span>c</span><span class="echo" data-char="s">s</span><span class="echo middle" data-char="s">s</span><span class="echo" data-char="s">s</span><span>t</span><span>i</span><span class="echo" data-char="l">l</span><span class="echo middle" data-char="l">l</span><span class="echo" data-char="l">l</span><span>e</span><span class="echo" data-char="b">b</span><span class="echo middle" data-char="b">b</span><span class="echo" data-char="b">b</span><span>e</span><span>n</span>
+        </h1>
+
+        <div class="landing" id="landing">
+            <div class="radio-wrap">
+                <input type="radio" name="mode" id="easy" value="easy" />
+                <label for="easy" class="radio-label radio-label-easy"
+                    >easy</label
+                >
+            </div>
+            <div class="radio-wrap">
+                <input
+                    type="radio"
+                    name="mode"
+                    id="advanced"
+                    value="advanced"
+                />
+                <label for="advanced" class="radio-label radio-label-adv"
+                    >advanced</label
+                >
+            </div>
+        </div>
+
+        <div class="stage" id="stage">
+            <div class="spinner"><div class="spinner-inner"></div></div>
+        </div>
+
+        <div class="reveal" id="reveal">
+            <span class="mode-tag" id="modeTag"></span>
+            <div class="reveal-row">
+                <div class="img-frame" id="imgFrame">
+                    <img id="imgEl" src="" alt="" />
+                </div>
+            </div>
+                <p class="info">
+                    drop your image to stop the clock. screenshot the result and
+                    share your time!
+                </p>
+                <p class="timer" id="timerEl">00:00</p>
+            </div>
+        </div>
+
+        <script>
+            (async () => {
+                const res = await fetch("images.json");
+                const data = await res.json();
+
+                const landing = document.getElementById("landing");
+                const stage = document.getElementById("stage");
+                const reveal = document.getElementById("reveal");
+                const imgEl = document.getElementById("imgEl");
+                const imgFrame = document.getElementById("imgFrame");
+                const modeTag = document.getElementById("modeTag");
+                const timerEl = document.getElementById("timerEl");
+
+                const title = document.getElementById("title");
+
+                title.addEventListener("click", () => {
+                    if (!title.classList.contains("shrink")) return;
+                    reveal.classList.remove("active");
+                    landing.style.display = "flex";
+                    document
+                        .querySelectorAll('input[name="mode"]')
+                        .forEach((r) => (r.checked = false));
+                    resetTimer();
+                    title.classList.remove("shrink");
+                    timerEl.classList.remove("active");
+                });
+
+                let timerInterval = null;
+                let timerRunning = false;
+
+                function startTimer() {
+                    const start = Date.now();
+                    timerEl.textContent = "00:00";
+                    timerEl.classList.remove("stopped");
+                    timerEl.classList.add("active");
+                    timerInterval = setInterval(() => {
+                        const elapsed = Math.floor((Date.now() - start) / 1000);
+                        const m = String(Math.floor(elapsed / 60)).padStart(
+                            2,
+                            "0",
+                        );
+                        const s = String(elapsed % 60).padStart(2, "0");
+                        timerEl.textContent = `${m}:${s}`;
+                    }, 100);
+                    timerRunning = true;
+                }
+
+                function stopTimer() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    timerEl.classList.add("stopped");
+                    timerRunning = false;
+                }
+
+                function resetTimer() {
+                    stopTimer();
+                    timerEl.textContent = "00:00";
+                    timerEl.classList.remove("stopped");
+                    timerEl.classList.remove("active");
+                }
+
+                function handleDropFile(file) {
+                    if (!file || !file.type.startsWith("image/")) return;
+                    stopTimer();
+                    const url = URL.createObjectURL(file);
+                    imgEl.src = url;
+                    imgEl.alt = "your drop";
+                }
+
+                imgFrame.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    if (timerRunning) imgFrame.classList.add("dragover");
+                });
+
+                imgFrame.addEventListener("dragleave", () => {
+                    imgFrame.classList.remove("dragover");
+                });
+
+                imgFrame.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    imgFrame.classList.remove("dragover");
+                    const file = e.dataTransfer.files[0];
+                    handleDropFile(file);
+                });
+
+                document
+                    .querySelectorAll('input[name="mode"]')
+                    .forEach((radio) => {
+                        radio.addEventListener("change", () => {
+                            const mode = radio.value;
+                            const pool = data[mode];
+                            const pick =
+                                pool[Math.floor(Math.random() * pool.length)];
+
+                            landing.style.display = "none";
+                            stage.classList.add("active");
+                            resetTimer();
+                            title.classList.add("shrink");
+
+                            setTimeout(() => {
+                                stage.classList.remove("active");
+
+                                const folder =
+                                    mode === "easy" ? "easy" : "advanced";
+                                imgEl.src = `img/${folder}/${pick.file}`;
+                                imgEl.alt = pick.file;
+
+                                modeTag.textContent = mode;
+                                modeTag.className =
+                                    "mode-tag " +
+                                    (mode === "easy"
+                                        ? "mode-tag-easy"
+                                        : "mode-tag-adv");
+
+                                reveal.classList.add("active");
+
+                                imgFrame.style.animation = "none";
+                                void imgFrame.offsetWidth;
+                                imgFrame.style.animation = "";
+
+                                startTimer();
+                            }, 1200);
+                        });
+                    });
+            })();
+        </script>
+    </body>
+</html>
